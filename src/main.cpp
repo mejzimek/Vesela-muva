@@ -40,7 +40,7 @@ bool firstMouse = true;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
-struct PointLight {
+struct PointLight { //test commit
     glm::vec3 position;
     glm::vec3 ambient;
     glm::vec3 diffuse;
