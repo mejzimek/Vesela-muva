@@ -49,8 +49,8 @@ struct ProgramState {
     bool ImGuiEnabled = false;
     Camera camera;
     bool CameraMouseMovementUpdateEnabled = true;
-    glm::vec3 backpackPosition = glm::vec3(0.0f);
-    float backpackScale = 1.0f;
+
+
     float muvaScale = 0.4f;
     DirLight dirLight;
     ProgramState()
@@ -288,8 +288,7 @@ int main() {
     skyboxShader.setInt("skybox", 0);
     // load models
 
-    Model ourModel("resources/objects/backpack/backpack.obj");
-    ourModel.SetShaderTextureNamePrefix("material.");
+
 
     stbi_set_flip_vertically_on_load(false);
     Model muvaModel("resources/objects/muva/scene.gltf");
@@ -345,17 +344,11 @@ int main() {
 
         // render the loaded model
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::translate(model,
-                               programState->backpackPosition); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(programState->backpackScale));    // it's a bit too big for our scene, so scale it down
-        ourShader.setMat4("model", model);
-        ourModel.Draw(ourShader);
 
-        model = glm::mat4(1.0f);
         model = glm::translate(model,
                                glm::vec3(5.0,5.0,5.0)); // translate it down so it's at the center of the scene
         float t = currentFrame;
-        model = glm::translate(model, glm::vec3(2 * glm::cos(t), 5 * glm::sin(0.2 * t), 2 * glm::sin(t)));
+        model = glm::translate(model, glm::vec3(3 * glm::cos(t), 4 * glm::sin(0.2 * t), 3 * glm::sin(t)));
         model = glm::scale(model, glm::vec3(programState->muvaScale));    // it's a bit too big for our scene, so scale it down
         model= glm::rotate(model, glm::radians(180.0f), glm::vec3(1.0f, 0.0f, 0.0f));
         model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0f));
@@ -372,9 +365,10 @@ int main() {
 
         glBindVertexArray(transparentVAO);
         glBindTexture(GL_TEXTURE_2D, bubbleTexture);
-        for(glm::vec3 pos : bubblePos){
+        for(size_t i=0; i<bubblePos.size();i++){
             model = glm::mat4(1.0f);
-            model = glm::translate(model, pos);
+            model = glm::translate(model, bubblePos[i]);
+            model = glm::translate(model, glm::vec3(2 * glm::cos(t+i), 3 *pow(-1,i%2)* glm::sin(0.2 * t), 2 * glm::sin(t)));
             blendingShader.setMat4("model", model);
             glDrawArrays(GL_TRIANGLES, 0, 6);
         }
@@ -471,17 +465,7 @@ void DrawImGui(ProgramState *programState) {
     ImGui::NewFrame();
 
 
-    {
-        static float f = 0.0f;
-        ImGui::Begin("Hello window");
-        ImGui::Text("Hello text");
-        ImGui::SliderFloat("Float slider", &f, 0.0, 1.0);
-        ImGui::ColorEdit3("Background color", (float *) &programState->clearColor);
-        ImGui::DragFloat3("Backpack position", (float*)&programState->backpackPosition);
-        ImGui::DragFloat("Backpack scale", &programState->backpackScale, 0.05, 0.1, 4.0);
 
-        ImGui::End();
-    }
 
     {
         ImGui::Begin("Camera info");
