@@ -25,8 +25,8 @@ unsigned int loadCubemap(vector<std::string> faces);
 unsigned int loadTexture(const char *path);
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1600*0.8;
+const unsigned int SCR_HEIGHT = 1200*0.8;
 
 // camera
 float lastX = SCR_WIDTH / 2.0f;
