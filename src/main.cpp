@@ -232,7 +232,7 @@ int main() {
         model = glm::scale(model, glm::vec3(programState->backpackScale));    // it's a bit too big for our scene, so scale it down
         ourShader.setMat4("model", model);
         ourModel.Draw(ourShader);
-//..............................................
+
         model = glm::mat4(1.0f);
         model = glm::translate(model,
                                glm::vec3(5.0,5.0,5.0)); // translate it down so it's at the center of the scene
