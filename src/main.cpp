@@ -158,6 +158,12 @@ int main() {
     // -----------------------------
     glEnable(GL_DEPTH_TEST);
 
+    //face culling
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_BACK);
+    glFrontFace(GL_CCW);
+
+
     //skybox...
 
     float skyboxVertices[] = {
@@ -382,7 +388,7 @@ int main() {
         ourShader.setMat4("model", model);
         muvaModel.Draw(ourShader);
 
-
+        glDisable(GL_CULL_FACE);
         blendingShader.use();
         blendingShader.setMat4("projection", projection);
         blendingShader.setMat4("view", view);
@@ -412,6 +418,7 @@ int main() {
         glBindVertexArray(0);
         glDepthFunc(GL_LESS); // set depth function back to default
 
+        glEnable(GL_CULL_FACE);
 
         if (programState->ImGuiEnabled)
             DrawImGui(programState);
